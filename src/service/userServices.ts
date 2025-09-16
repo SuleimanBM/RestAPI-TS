@@ -1,9 +1,9 @@
-import { InferSchemaType } from 'mongoose';
-import UserModel, {UserDocument} from '../models/userModels.js';
+import { FilterQuery, InferSchemaType } from 'mongoose';
+import UserModel, {UserDocument, UserInput} from '../models/userModels.js';
 import omit from "lodash/omit.js";
 
 
-export async function createUser(input: InferSchemaType<Omit<UserDocument, "createdAt" | "updatedAt" | "comparePassword">>){
+export async function createUser(input: UserInput){
     try{
         const user =  await UserModel.create(input);
         return omit(user.toJSON(), "password");
@@ -24,4 +24,8 @@ export async function validatePassword({email, password}:{email: string, passwor
     if(!isValid) return false
 
     return omit(user.toJSON(), "password");
+}
+
+export async function findUser(query: FilterQuery<UserDocument>){
+    return UserModel.findOne(query).lean()
 }

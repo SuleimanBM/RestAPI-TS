@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcrypt';
-import config from "../../config/default.js"
 import { UserDocument } from "./userModels.js";
 
 
@@ -21,6 +19,6 @@ const sessionSchema = new mongoose.Schema({
 }
 );
 
-const SessionModel = mongoose.model("Session", sessionSchema);
+const SessionModel = mongoose.model <SessionDocument>("Session", sessionSchema);
 
 export default SessionModel;

@@ -1,15 +1,24 @@
 import get from 'lodash/get.js';
 import { verifyJwt } from "../utils/jwt.js";
-const deserializeUser = (req, res, next) => {
+import { reIssueAccessToken } from "../service/sessionServices.js";
+const deserializeUser = async (req, res, next) => {
     const accessToken = get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
+    const refreshToken = get(req, "headers.x-refresh");
     if (!accessToken) {
         return next();
     }
-    console.log("Accesstokent", accessToken);
     const { decoded, expired } = verifyJwt(accessToken);
-    console.log('decoded', decoded);
     if (decoded) {
         res.locals.user = decoded;
+        return next();
+    }
+    if (expired && refreshToken) {
+        const newAccessToken = await reIssueAccessToken({ refreshToken });
+        if (newAccessToken) {
+            res.setHeader('x-access-token', newAccessToken);
+        }
+        const result = verifyJwt(newAccessToken);
+        res.locals.user = result.decoded;
         return next();
     }
     return next();

@@ -1,26 +1,17 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 import { SessionDocument } from "../models/sessionModels.js";
-export declare function createSession(userId: string, userAgent: string): Promise<import("mongoose").FlattenMaps<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    valid: boolean;
-    user?: import("mongoose").Types.ObjectId | null;
-    userAgent?: string | null;
-} & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+export declare function createSession(userId: string, userAgent: string): Promise<import("mongoose").FlattenMaps<SessionDocument & Required<{
+    _id: unknown;
+}> & {
     __v: number;
 }>>;
-export declare function findSessions(query: FilterQuery<SessionDocument>): Promise<(import("mongoose").FlattenMaps<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-    valid: boolean;
-    user?: import("mongoose").Types.ObjectId | null;
-    userAgent?: string | null;
+export declare function findSessions(query: FilterQuery<SessionDocument>): Promise<(import("mongoose").FlattenMaps<SessionDocument> & Required<{
+    _id: import("mongoose").FlattenMaps<unknown>;
 }> & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
     __v: number;
 })[]>;
+export declare function updateSesssion(query: FilterQuery<SessionDocument>, update: UpdateQuery<SessionDocument>): Promise<import("mongoose").UpdateWriteOpResult>;
+export declare function reIssueAccessToken({ refreshToken }: {
+    refreshToken: string;
+}): Promise<string | false>;
 //# sourceMappingURL=sessionServices.d.ts.map

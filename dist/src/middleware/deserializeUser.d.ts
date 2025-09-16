@@ -1,4 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-declare const deserializeUser: (req: Request, res: Response, next: NextFunction) => void;
+declare const deserializeUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export default deserializeUser;
 //# sourceMappingURL=deserializeUser.d.ts.map

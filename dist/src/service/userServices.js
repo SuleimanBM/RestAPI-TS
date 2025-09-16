@@ -19,4 +19,7 @@ export async function validatePassword({ email, password }) {
         return false;
     return omit(user.toJSON(), "password");
 }
+export async function findUser(query) {
+    return UserModel.findOne(query).lean();
+}
 //# sourceMappingURL=userServices.js.map

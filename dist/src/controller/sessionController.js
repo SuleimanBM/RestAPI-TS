@@ -1,5 +1,5 @@
 import { validatePassword } from "../service/userServices.js";
-import { createSession, findSessions } from "../service/sessionServices.js";
+import { createSession, findSessions, updateSesssion } from "../service/sessionServices.js";
 import { signJwt } from "../utils/jwt.js";
 import config from "../../config/default.js";
 import logger from "../utils/logger.js";
@@ -21,9 +21,15 @@ export async function createUserSessionHandler(req, res) {
 }
 export async function getUserSessionsHandler(req, res) {
     const userId = await res.locals.user._id;
-    console.log(userId);
     const sessions = await findSessions({ user: userId, valid: true });
-    console.log(sessions);
     return res.send({ sessions });
+}
+export async function deleteSessionHandler(req, res) {
+    const sessionId = res.locals.user.session;
+    await updateSesssion({ _id: sessionId }, { valid: false });
+    return res.send({
+        accessToken: null,
+        refreshToken: null,
+    });
 }
 //# sourceMappingURL=sessionController.js.map
